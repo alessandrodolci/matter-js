@@ -300,6 +300,7 @@ var Mouse = require('../core/Mouse');
             background = options.wireframes ? options.wireframeBackground : options.background,
             bodies = [],
             constraints = [],
+            plugin,
             i;
 
         var event = {
@@ -366,6 +367,10 @@ var Mouse = require('../core/Mouse');
             }
         }
 
+        if (world.plugin) {
+            plugin = world.plugin;
+        }
+
         if (!options.wireframes || (engine.enableSleeping && options.showSleeping)) {
             // fully featured rendering of bodies
             Render.bodies(render, bodies, context);
@@ -405,6 +410,8 @@ var Mouse = require('../core/Mouse');
             Render.mousePosition(render, render.mouse, context);
 
         Render.constraints(constraints, context);
+
+        Render.plugin(plugin, context);
 
         if (options.showBroadphase && engine.broadphase.controller === Grid)
             Render.grid(render, engine.broadphase, context);
@@ -560,6 +567,56 @@ var Mouse = require('../core/Mouse');
                 c.closePath();
                 c.fill();
             }
+        }
+    };
+
+    Render.plugin = function(plugin, context) {
+        const c = context;
+
+        for (let i = 0; i < plugin.springs.length; i++) {
+            var spring = plugin.springs[i];
+            console.log("here" + spring);
+
+            if (!spring.pointA || !spring.pointB)
+                continue;
+
+            var bodyA = spring.bodyA,
+                bodyB = spring.bodyB,
+                start,
+                end;
+
+            if (bodyA) {
+                start = Vector.add(bodyA.position, spring.pointA);
+            } else {
+                start = spring.pointA;
+            }
+            if (bodyB) {
+                end = Vector.add(bodyB.position, spring.pointB);
+            } else {
+                end = spring.pointB;
+            }
+
+            c.beginPath();
+            c.moveTo(start.x, start.y);
+
+            if (spring.type === 'spring') {
+                var delta = Vector.sub(end, start),
+                    normal = Vector.perp(Vector.normalise(delta)),
+                    coils = Math.ceil(Common.clamp(spring.length / 5, 12, 20)),
+                    offset;
+
+                for (var j = 1; j < coils; j += 1) {
+                    offset = j % 2 === 0 ? 1 : -1;
+
+                    c.lineTo(
+                        start.x + delta.x * (j / coils) + normal.x * offset * 4,
+                        start.y + delta.y * (j / coils) + normal.y * offset * 4
+                    );
+                }
+            }
+
+            c.lineTo(end.x, end.y);
+            c.stroke();
         }
     };
 
