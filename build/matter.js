@@ -1,5 +1,5 @@
 /*!
- * matter 0.14.2 by @liabru 2020-03-15
+ * matter 0.14.2 by @liabru 2020-03-19
  *     http://brm.io/matter-js/
  *     License MIT
  */
@@ -4845,7 +4845,6 @@ var Mouse = __webpack_require__(14);
 
         for (let i = 0; i < plugin.springs.length; i++) {
             var spring = plugin.springs[i];
-            console.log("here" + spring);
 
             if (!spring.pointA || !spring.pointB)
                 continue;
@@ -5304,6 +5303,10 @@ var Mouse = __webpack_require__(14);
                 part = body.parts[k];
                 c.arc(part.position.x, part.position.y, 3, 0, 2 * Math.PI, false);
                 c.closePath();
+
+                c.font = "12px sans";
+                c.fillStyle = 'white';
+                c.fillText("(" + Math.round(body.position.x) + ", " + Math.round(body.position.y) + ")", body.position.x, body.position.y);
             }
         }
 

@@ -575,7 +575,6 @@ var Mouse = require('../core/Mouse');
 
         for (let i = 0; i < plugin.springs.length; i++) {
             var spring = plugin.springs[i];
-            console.log("here" + spring);
 
             if (!spring.pointA || !spring.pointB)
                 continue;
@@ -1034,6 +1033,10 @@ var Mouse = require('../core/Mouse');
                 part = body.parts[k];
                 c.arc(part.position.x, part.position.y, 3, 0, 2 * Math.PI, false);
                 c.closePath();
+
+                c.font = "12px sans";
+                c.fillStyle = 'white';
+                c.fillText("(" + Math.round(body.position.x) + ", " + Math.round(body.position.y) + ")", body.position.x, body.position.y);
             }
         }
 
