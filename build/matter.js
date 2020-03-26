@@ -1,5 +1,5 @@
 /*!
- * matter 0.14.2 by @liabru 2020-03-19
+ * matter 0.14.2 by @liabru 2020-03-26
  *     http://brm.io/matter-js/
  *     License MIT
  */
@@ -5076,6 +5076,14 @@ var Mouse = __webpack_require__(14);
                 for (j = 1; j < part.vertices.length; j++) {
                     if (!part.vertices[j - 1].isInternal || showInternalEdges) {
                         c.lineTo(part.vertices[j].x, part.vertices[j].y);
+
+                        c.setLineDash([1, 19]);
+                        c.lineWidth = c.lineWidth * 10;
+                        c.moveTo(part.vertices[j - 1].x, part.vertices[j - 1].y);
+                        c.lineTo(part.vertices[j].x, part.vertices[j].y);
+                        
+                        c.setLineDash([]);
+                        c.lineWidth = c.lineWidth / 10;
                     } else {
                         c.moveTo(part.vertices[j].x, part.vertices[j].y);
                     }
@@ -5086,6 +5094,16 @@ var Mouse = __webpack_require__(14);
                 }
 
                 c.lineTo(part.vertices[0].x, part.vertices[0].y);
+
+                c.setLineDash([1, 19]);
+                c.lineWidth = c.lineWidth * 10;
+                c.moveTo(part.vertices[part.vertices.length-1].x, part.vertices[part.vertices.length-1].y);
+                c.lineTo(part.vertices[0].x, part.vertices[0].y);
+                
+                c.stroke();
+                
+                c.setLineDash([]);
+                c.lineWidth = c.lineWidth / 10;
             }
         }
 

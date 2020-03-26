@@ -806,6 +806,14 @@ var Mouse = require('../core/Mouse');
                 for (j = 1; j < part.vertices.length; j++) {
                     if (!part.vertices[j - 1].isInternal || showInternalEdges) {
                         c.lineTo(part.vertices[j].x, part.vertices[j].y);
+
+                        c.setLineDash([1, 19]);
+                        c.lineWidth = c.lineWidth * 10;
+                        c.moveTo(part.vertices[j - 1].x, part.vertices[j - 1].y);
+                        c.lineTo(part.vertices[j].x, part.vertices[j].y);
+                        
+                        c.setLineDash([]);
+                        c.lineWidth = c.lineWidth / 10;
                     } else {
                         c.moveTo(part.vertices[j].x, part.vertices[j].y);
                     }
@@ -816,6 +824,16 @@ var Mouse = require('../core/Mouse');
                 }
 
                 c.lineTo(part.vertices[0].x, part.vertices[0].y);
+
+                c.setLineDash([1, 19]);
+                c.lineWidth = c.lineWidth * 10;
+                c.moveTo(part.vertices[part.vertices.length-1].x, part.vertices[part.vertices.length-1].y);
+                c.lineTo(part.vertices[0].x, part.vertices[0].y);
+                
+                c.stroke();
+                
+                c.setLineDash([]);
+                c.lineWidth = c.lineWidth / 10;
             }
         }
 
